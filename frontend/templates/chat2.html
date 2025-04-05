@@ -5,23 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PinPal</title>
-  <link rel="stylesheet" href="{% static 'styles/chat.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/chat2.css' %}">
   <link rel="icon" href="static/images/FinPal.png">
 </head>
 <body style="background: url('{% static 'images/skyline.jpg' %}') no-repeat center center fixed; background-size: cover;">
 
   <div class="container">
+    <h1 class="app-title">FinPal</h1>
+
+
     <div class="logo-login-box">
       <img src="{% static 'images/FinPal.png' %}" alt="PinPal Logo" class="logo" />
-      <h1 class="app-title">FinPal</h1>
       <p class="subtitle">Your personal AI-Powered Financial Assistant</p>
 
       <div class="button-row">
-        <a href="{% url 'chat2' %}" class="login-button">Sign Up</a>
+        <a href="{% url 'chat' %}" class="login-button">Sign Up</a>
         <a href="/signin" class="login-button">Sign In</a>
       </div>
     </div>
   </div>
+
 
 
 
