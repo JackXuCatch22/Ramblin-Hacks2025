@@ -1,29 +1,257 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PinPal</title>
-  <link rel="stylesheet" href="{% static 'styles/chat.css' %}">
-  <link rel="icon" href="static/images/FinPal.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat with Your Therapist Pet</title>
+  <link rel="stylesheet" href="/styles/chat.css">
+  <style>
+    /* BASIC BODY STYLE */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* CHAT CONTAINER FIXED BOTTOM RIGHT */
+    #chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+
+    /* HIDDEN/MINIMIZED STATE */
+    #chat-container.minimized {
+      height: 60px;
+      width: 200px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: #4a90e2;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    #header {
+      background: #4a90e2;
+      color: white;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #header h2 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    #avatar {
+      display: flex;
+      align-items: center;
+    }
+
+    #chat-window {
+      flex: 1;
+      padding: 10px;
+      background: #fafafa;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #messages {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .user-message {
+      background: #DCF8C6;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot-message {
+      background: #eee;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    #input-container {
+      display: flex;
+      padding: 10px;
+      background: #f0f0f0;
+      border-top: 1px solid #ddd;
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    #send-button {
+      margin-left: 10px;
+      background: #4a90e2;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #settings-button {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #toggle-button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  </style>
 </head>
-<body style="background: url('{% static 'images/skyline.jpg' %}') no-repeat center center fixed; background-size: cover;">
+<body>
 
-  <div class="container">
-    <div class="logo-login-box">
-      <img src="{% static 'images/FinPal.png' %}" alt="PinPal Logo" class="logo" />
-      <h1 class="app-title">FinPal</h1>
-      <p class="subtitle">Your personal AI-Powered Financial Assistant</p>
-
-      <div class="button-row">
-        <a href="{% url 'chat2' %}" class="login-button">Sign Up</a>
-        <a href="/signin" class="login-button">Sign In</a>
-      </div>
+<div id="chat-container">
+  <div id="header">
+    <div id="avatar">
+      <svg width="40" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <circle id="pet-body" cx="12" cy="12" r="10" fill="brown"></circle>
+        <circle id="left-eye" cx="9" cy="10" r="1.5" fill="black"></circle>
+        <circle id="right-eye" cx="15" cy="10" r="1.5" fill="black"></circle>
+        <polygon id="hat" points="8,4 16,4 12,0" fill="blue" style="display: none;"></polygon>
+      </svg>
+    </div>
+    <h2>Therapist Pet</h2>
+    <div>
+      <button id="settings-button">Settings</button>
+      <button id="toggle-button">_</button> <!-- Toggle button here -->
     </div>
   </div>
 
+  <div id="chat-window">
+    <div id="messages"></div>
+  </div>
 
+  <div id="input-container">
+    <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+    <button id="send-button">Send</button>
+  </div>
+</div>
+
+<script>
+  // Apply customization to avatar
+  function applyAvatarCustomizations(settings) {
+    document.getElementById("pet-body").setAttribute("fill", settings.bodyColor || "brown");
+    document.getElementById("left-eye").setAttribute("fill", settings.eyeColor || "black");
+    document.getElementById("right-eye").setAttribute("fill", settings.eyeColor || "black");
+
+    const hat = document.getElementById("hat");
+    hat.style.display = settings.accessory === "hat" ? "block" : "none";
+    hat.setAttribute("fill", "blue");
+  }
+
+  // Fetch user settings from server
+  async function fetchAvatarSettings() {
+    try {
+      const response = await fetch('/api/user/avatar');
+      if (!response.ok) {
+        throw new Error("Failed to load avatar settings");
+      }
+      const data = await response.json();
+      applyAvatarCustomizations({
+        bodyColor: data.color || "brown",
+        eyeColor: data.eyeColor || "black"
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Error loading avatar settings.");
+    }
+  }
+
+  // Navigate to settings page
+  document.getElementById("settings-button").addEventListener("click", () => {
+    window.location.href = "/settings.html";
+  });
+
+  // Messaging functionality
+  document.getElementById("send-button").addEventListener("click", sendMessage);
+  document.getElementById("user-input").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") sendMessage();
+  });
+
+  function sendMessage() {
+    const input = document.getElementById("user-input");
+    const text = input.value.trim();
+    if (text === "") return;
+
+    addMessage(text, 'user');
+    input.value = "";
+
+    // Simulate bot reply
+    setTimeout(() => {
+      addMessage("This is your therapist pet speaking!", 'bot');
+    }, 500);
+  }
+
+  function addMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.classList.add('message');
+    msg.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+    msg.textContent = text;
+    document.getElementById('messages').appendChild(msg);
+
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  // Toggle chat window open/close
+  document.getElementById("toggle-button").addEventListener("click", function () {
+    const chatContainer = document.getElementById("chat-container");
+    chatContainer.classList.toggle("minimized");
+  });
+
+</script>
 
 </body>
 </html>
