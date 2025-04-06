@@ -26,5 +26,6 @@ urlpatterns = [
     path('dashboard', views.dashboardView, name="dashboard"),
     path('signup', views.signup, name='signup'),
     path('signupCheck', views.signupCheck, name='signupCheck'),
+    path('logout/', views.logout_view, name='logout'),
 
 ]

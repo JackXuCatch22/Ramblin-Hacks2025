@@ -8,7 +8,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+  background: url("{% static 'images/skyline.jpg' %}") no-repeat center center fixed;
   background-size: cover;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
