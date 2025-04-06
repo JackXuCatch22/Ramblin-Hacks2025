@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <body style="background: url('{% static 'images/skyline.jpg' %}') no-repeat center center fixed; background-size: cover;">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinPal Sign Up</title>
+  <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+  <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+  <link rel="icon" href="{% static 'images/FinPal.png' %}">
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="app-title">FinPal</h1>
+    <div class="logo-login-box">
+      <img src="{% static 'images/FinPal.png' %}" alt="FinPal Logo" class="logo" />
+      {% if error_message %}
+      <p style="color: red; text-align: center;">{{ error_message }}</p>
+      {% endif %}
+      {% if success_message %}
+      <p style="color: green; text-align: center;">{{ success_message }}</p>
+      {% endif %}
+        <form method="POST" action="{% url 'signupCheck' %}" class="login-form">
+          {% csrf_token %}
+          <div class="input-pair">
+            <input type="text" name="username" placeholder="Username" required class="login-input">
+            <input type="password" name="password" placeholder="Password" required class="login-input">
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required class="login-input">
+          </div>
+          <button type="submit" class="login-button">Sign Up</button>
+        </form>
+
+    </div>
+  </div>
+
+</body>
+</html>
