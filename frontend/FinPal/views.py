@@ -50,7 +50,9 @@ def storePassword(username, password):
         }
     )
     return True
-    
+#end of login backend
+
+#plaid backend
 
 def chat(request):
     return render(request, 'chat.html')
