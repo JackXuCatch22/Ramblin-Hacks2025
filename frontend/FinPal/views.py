@@ -54,25 +54,44 @@ def storePassword(username, password):
 
 
 #start of plaid backend
+
+def fetch_plaid_account_data():
+    return {
+        'checking_accounts': [
+            {"name": "Platypus Federal Reserve Bank Checking", "balance": 1500.00},
+            {"name": "Bank of Timbuktu Checking", "balance": 2300.00},
+            {"name": "Cloudsdale Valley Checking", "balance": 1800.00},
+            {"name": "Infinity Checking", "balance": 600.00}
+        ],
+        'credit_accounts': [
+            {"name": "Platypus Federal Reserve Bank Credit Card", "balance": 500.00},
+            {"name": "Cloudsdale Valley Credit Card", "balance": 200.00},
+            {"name": "Infinity Credit Card", "balance": 500.00},
+            {"name": "Bank of Timbuktu Credit Card", "balance": 320.00}
+        ]
+    }
+
+
 def getTotalCheckingAccounts():
-    return [
-        ("A", 10),
-        ("B", 20),
-        ("C", 30),
-        ("D", 40)
-    ]
+    accounts_data = fetch_plaid_account_data()
+    checking_accounts = accounts_data['checking_accounts']
+    return [(account['name'], account['balance']) for account in checking_accounts]
 
 def getTotalCreditAccounts():
-    return [
-        ("1", 20),
-        ("2", 30),
-    ]
+    accounts_data = fetch_plaid_account_data()
+    credit_accounts = accounts_data['credit_accounts']
+    return [(account['name'], account['balance']) for account in credit_accounts]
 
 def getTotalCheckingMoney():
-    return 100
+    accounts_data = fetch_plaid_account_data()
+    checking_accounts = accounts_data['checking_accounts']
+    return sum(account['balance'] for account in checking_accounts)
+
 
 def getTotalCreditMoney():
-    return 50
+    accounts_data = fetch_plaid_account_data()
+    credit_accounts = accounts_data['credit_accounts']
+    return sum(account['balance'] for account in credit_accounts)
 
 
 #end of plaid
