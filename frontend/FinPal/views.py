@@ -121,3 +121,34 @@ def loginCheck(request):
     return redirect('dashboard')
 
 
+def signup(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if checkUserExists(username):
+            return render(request, 'signup.html', {'error_message': 'Username already exists. Please choose another.'})
+
+        storePassword(username, password)
+        return render(request, 'signup.html', {'success_message': 'Account created! Please log in.'})
+
+    return render(request, 'signup.html')
+
+def signupCheck(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if password != confirm_password:
+            return render(request, 'signup.html', {'error_message': 'Passwords do not match.'})
+
+        if checkUserExists(username):
+            return render(request, 'signup.html', {'error_message': 'Username already exists. Please choose another.'})
+
+        storePassword(username, password)
+        return render(request, 'signup.html', {'success_message': 'Account created! Please log in.'})
+
+    return redirect('signup')
+
+

@@ -23,5 +23,8 @@ urlpatterns = [
     path('chat', views.chat, name='chat'),
     path('login', views.login_view, name='login'),
     path('loginCheck', views.loginCheck, name="loginCheck"),
-    path('dashboard', views.dashboardView, name="dashboard")
+    path('dashboard', views.dashboardView, name="dashboard"),
+    path('signup', views.signup, name='signup'),
+    path('signupCheck', views.signupCheck, name='signupCheck'),
+
 ]
