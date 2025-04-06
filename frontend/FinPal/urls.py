@@ -21,5 +21,6 @@ from . import views  # Import your views file
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('chat', views.chat, name='chat'),
-    path('login',views.login_view, name='login'),
+    path('login', views.login_view, name='login'),
+    path('loginCheck', views.loginCheck, name="loginCheck")
 ]
