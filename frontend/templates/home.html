@@ -1,12 +1,13 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% load static %}
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FinPal</title>
   <link rel="stylesheet" href="{% static 'styles/home.css' %}">
-  <link rel="icon" href="static/images/FinPal.png">
+  <link rel="icon" href="{% static 'images/FinPal.png' %}">
+
 </head>
 <body style="background: url('{% static 'images/skyline.jpg' %}') no-repeat center center fixed; background-size: cover;">
 

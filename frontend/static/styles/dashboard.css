@@ -1,0 +1,97 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url('/static/fonts/test.TTF') format('truetype');
+}
+
+body {
+    font-family: 'MyFont', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+}
+
+h2 {
+    color: #3498db;
+    margin-top: 30px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    font-size: 1.8rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 14px 16px;
+    text-align: left;
+}
+
+th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+tr:nth-child(even) {
+    background-color: #f9fbfd;
+}
+
+td {
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    color: #2c3e50;
+}
+
+.total-section {
+    margin-top: 40px;
+    text-align: right;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.green-text {
+    color: #27ae60;
+}
+
+.red-text {
+    color: #e74c3c;
+}
+
+.neutral-text {
+    color: #2c3e50;
+}
+
+hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}

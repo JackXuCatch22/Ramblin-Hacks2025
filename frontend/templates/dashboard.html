@@ -1,128 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Dashboard</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f7fa;
-      margin: 0;
-      padding: 40px;
-      display: flex;
-      justify-content: center;
-    }
+  {% load static %}
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | FinPal</title>
 
-    .container {
-      max-width: 800px;
-      width: 100%;
-      background-color: white;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      padding: 30px 40px;
-    }
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    
+    <!-- <link rel="icon" href="{% static 'images/FinPal.png' %}"> -->
+  </head>
 
-    h1 {
-      color: #2c3e50;
-      text-align: center;
-      margin-bottom: 40px;
-    }
+  <body>
+    <div class="container">
+      <h1>Account Dashboard</h1>
 
-    h2 {
-      color: #3498db;
-      margin-top: 30px;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 5px;
-    }
+      <h2>Checking Accounts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Account Name</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, value in checkingAccounts %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>${{ value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
+      <h2>Credit Accounts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Account Name</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, value in creditAccounts %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>${{ value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-    th, td {
-      padding: 14px 16px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #3498db;
-      color: white;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9fbfd;
-    }
-
-    td {
-      border-bottom: 1px solid #eee;
-      color: #2c3e50;
-    }
-
-    .total-section {
-      margin-top: 40px;
-      text-align: right;
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h1>Account Dashboard</h1>
-
-    <!-- Checking Accounts Section -->
-    <h2>Checking Accounts</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Account Name</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for name, value in checkingAccounts %}
-        <tr>
-          <td>{{ name }}</td>
-          <td>${{ value }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <!-- Credit Accounts Section -->
-    <h2>Credit Accounts</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Account Name</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for name, value in creditAccounts %}
-        <tr>
-          <td>{{ name }}</td>
-          <td>${{ value }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    <div class="total-section">
-      <p><span style="color: #27ae60;">Total Saved (Checking):</span> <strong>${{ totalSaved }}</strong></p>
-      <p><span style="color: #e74c3c;">Total Used (Credit):</span> <strong>${{ totalUsed }}</strong></p>
-      <hr style="margin: 20px 0; border: none; border-top: 1px solid #ccc;">
-      <p><span style="color: #2c3e50;">Net Balance:</span> <strong>${{ netBalance }}</strong></p>
+      <!-- Totals Section -->
+      <div class="total-section">
+        <p><span class="green-text">Total Saved (Checking):</span> <strong>${{ totalSaved }}</strong></p>
+        <p><span class="red-text">Total Used (Credit):</span> <strong>${{ totalUsed }}</strong></p>
+        <hr>
+        <p><span class="neutral-text">Net Balance:</span> <strong>${{ netBalance }}</strong></p>
+      </div>
     </div>
-  </div>
-{% include 'chat.html' %}
-</body>
-</html>
 
+    {% include 'chat.html' %}
+  </body>
+  </html>

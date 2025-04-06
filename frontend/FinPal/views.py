@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.views.decorators.csrf import csrf_exempt
 #this should be in the backend login
 import bcrypt
 import boto3
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
+
 
 load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 dynamodb = boto3.resource(
     'dynamodb',
     aws_access_key_id= os.getenv("AWS_ACCESS_KEY_ID_dynamo"), 
@@ -15,22 +21,89 @@ dynamodb = boto3.resource(
 )
 table = dynamodb.Table('Ramblin_Hackathon_Users')
 
+
+def chat(request):
+    return render(request, 'chat.html')
+
+@csrf_exempt
+@api_view(['POST'])
+
+def chat_with_bot(request):
+    gtca = "Total checking accounts: " + str(getTotalCheckingAccounts())
+    tca = "Total credit accounts: " + str(getTotalCreditAccounts())
+    gtcm = "Total checking money: " + str(getTotalCheckingMoney())
+    gtcma = "Total credit money: " + str(getTotalCreditMoney())
+
+    stuff = gtca + " | " + tca + " | " + gtcm + " | " + gtcma
+
+    user_message = request.data.get('message')
+
+    if not user_message:
+        return Response({"error": "No message provided"}, status=400)
+
+    try:
+        classification = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a classifier. "
+                        "Determine if the user's question is mainly about finance, money, banking, saving, budgeting, investing, debt, loans, or credit. "
+                        "If YES, respond ONLY with 'yes'. If NOT, respond ONLY with 'no'. "
+                        "NO extra words. Just 'yes' or 'no'."
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ]
+        )
+        classification_response = classification.choices[0].message.content.strip().lower()
+
+        print(f"Classification result: {classification_response}")
+
+        if classification_response.startswith("n"):
+            return Response({"botResponse": "This is not a question related to finance. Please ask me something else."})
+
+        prompt = (
+            "You are a helpful financial advisor. "
+            "Explain financial concepts clearly in under 70 words, in a way teenagers can understand. "
+            f"User's financial information: {stuff}"
+        )
+
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ]
+        )
+        bot_response = completion.choices[0].message.content
+        return Response({"botResponse": bot_response})
+
+    except Exception as e:
+        return Response({"error": f"Internal server error: {str(e)}"}, status=500)
+
+
 def checkUserExists(username):
         response = table.get_item(Key={'username': username})
-        # print(response, "checkUser")
         if 'Item' in response:
             return True
         return False
 
 def checkPassword(username, password):
-    #get user data from DynamoDB and check username exists
     response = table.get_item(Key={'username': username})
-    # print(username)
-    # print(response)
     if 'Item' not in response:
         return False 
     
-    #get stored password from DynamoDB and check pass
     storedPasswordHash = response['Item'].get('password')
     if not storedPasswordHash:
         return False 
@@ -42,7 +115,6 @@ def storePassword(username, password):
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     
-    #store the hashed password in DynamoDB
     response = table.put_item(
         Item={
             'username': username,
@@ -50,10 +122,8 @@ def storePassword(username, password):
         }
     )
     return True
-#end of login backend
 
 
-#start of plaid backend
 def getTotalCheckingAccounts():
     return [
         ("A", 10),
@@ -78,8 +148,7 @@ def getTotalCreditMoney():
 #end of plaid
 
 
-def chat(request):
-    return render(request, 'chat.html')
+
 
 def home_view(request):
     return render(request, 'home.html')
@@ -109,7 +178,7 @@ def loginCheck(request):
     passwordExists = checkPassword(username, password)
     
     if not userExists:
-        # error message here instead of going back to login
+        #error message here instead of going back to login
         errorMessage = "User does not exist. Please register."
         return render(request, 'login.html', {'error_message': errorMessage})
     

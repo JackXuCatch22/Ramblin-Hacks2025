@@ -19,7 +19,7 @@ async function sendMessage() {
     });
 
     const data = await response.json();
-    console.log('Server response:', data); // ✅ Helpful for debugging
+    console.log('Server response:', data); 
 
     if (data && data.botResponse) {
       addMessage(data.botResponse, 'bot');
