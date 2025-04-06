@@ -151,4 +151,8 @@ def signupCheck(request):
 
     return redirect('signup')
 
+def logout_view(request):
+    return redirect('home')  # Make sure 'home' is a valid URL name
+
+
 
