@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background: url("{% static 'images/skyline.jpg' %}") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.input-pair {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.login-input {
+  padding: 10px;
+  flex: 1;
+  min-width: 120px;
+  max-width: 140px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1em;
+  text-align: center;
+}
+
+.logo-login-box {
+  background-color: rgba(76, 175, 80); /* Green */
+  padding: 60px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 320px;
+  height: 320px;
+}

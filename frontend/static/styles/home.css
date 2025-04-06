@@ -47,7 +47,7 @@ body {
 }
 
 .logo-login-box {
-  background-color: rgba(76, 175, 80); /* Green with 85% opacity */
+  background-color: rgba(76, 175, 80); /* Green */
   padding: 60px;
   border-radius: 16px;
   display: flex;
@@ -74,5 +74,15 @@ body {
   font-family: 'MyFont', sans-serif;
   text-align: center;
 }
+
+.login-input {
+  padding: 10px;
+  width: 90%;
+  border: none;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-size: 1em;
+}
+
 
 

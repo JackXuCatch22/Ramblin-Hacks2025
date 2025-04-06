@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PinPal</title>
+  <title>FinPal</title>
   <link rel="stylesheet" href="{% static 'styles/home.css' %}">
   <link rel="icon" href="static/images/FinPal.png">
 </head>
@@ -15,12 +15,13 @@
 
 
     <div class="logo-login-box">
-      <img src="{% static 'images/FinPal.png' %}" alt="PinPal Logo" class="logo" />
+      <img src="{% static 'images/FinPal.png' %}" alt="FinPal Logo" class="logo" />
       <p class="subtitle">Your personal AI-Powered Financial Assistant</p>
 
       <div class="button-row">
         <a href="{% url 'chat' %}" class="login-button">Sign Up</a>
-        <a href="/signin" class="login-button">Sign In</a>
+        <a href="{% url 'login' %}" class="login-button">Log In</a>
+
       </div>
     </div>
   </div>
