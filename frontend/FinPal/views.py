@@ -46,13 +46,11 @@ def storePassword(username, password):
     response = table.put_item(
         Item={
             'username': username,
-            'password': hashed_password.decode('utf-8')  # Store hashed password as a string
+            'password': hashed_password.decode('utf-8')  
         }
     )
     return True
 #end of login backend
-
-#plaid backend
 
 def chat(request):
     return render(request, 'chat.html')
