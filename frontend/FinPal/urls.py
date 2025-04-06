@@ -19,6 +19,6 @@ from django.urls import path
 from . import views  # Import your views file
 
 urlpatterns = [
-    path('', views.chat, name='chat'),
-    path('chat2/', views.chat2_view, name='chat2'),
+    path('', views.home_view, name='home'),
+    path('chat', views.chat, name='chat'),
 ]
