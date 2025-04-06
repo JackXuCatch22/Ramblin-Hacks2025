@@ -16,12 +16,9 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
+from . import views   # ✅ ADD THIS LINE
 
 urlpatterns = [
-<<<<<<< Updated upstream
-    #    path('admin/', admin.site.urls),
-=======
     path('', views.chat, name='chat'),  # homepage
     path('api/message/', views.chat_with_bot, name='chat_with_bot'),  # API POST endpoint
->>>>>>> Stashed changes
 ]

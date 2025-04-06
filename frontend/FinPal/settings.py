@@ -50,7 +50,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'FinPal.wsgi.application'
 
-<<<<<<< Updated upstream
+
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -101,12 +101,12 @@ STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-=======
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'frontend' / 'static',  # ✅ Fix: frontend/static
 ]
->>>>>>> Stashed changes
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
