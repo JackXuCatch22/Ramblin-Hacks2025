@@ -18,7 +18,11 @@
       <img src="{% static 'images/FinPal.png' %}" alt="FinPal Logo" class="logo" />
 <!--      <p class="subtitle">Login to your account</p>-->
 
-      <form method="POST" action="{% url 'login' %}" class="login-form">
+      {% if error_message %}
+      <p style="color: red; text-align: center;">{{ error_message }}</p> 
+      {% endif %}
+
+      <form method="POST" action="{% url 'loginCheck' %}" class="login-form">
         {% csrf_token %}
         <div class="input-pair">
           <input type="text" name="username" placeholder="Username" required class="login-input">
