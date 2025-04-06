@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 #this should be in the backend login
 import bcrypt
@@ -52,6 +52,32 @@ def storePassword(username, password):
     return True
 #end of login backend
 
+
+#start of plaid backend
+def getTotalCheckingAccounts():
+    return [
+        ("A", 10),
+        ("B", 20),
+        ("C", 30),
+        ("D", 40)
+    ]
+
+def getTotalCreditAccounts():
+    return [
+        ("1", 20),
+        ("2", 30),
+    ]
+
+def getTotalCheckingMoney():
+    return 100
+
+def getTotalCreditMoney():
+    return 50
+
+
+#end of plaid
+
+
 def chat(request):
     return render(request, 'chat.html')
 
@@ -59,8 +85,21 @@ def home_view(request):
     return render(request, 'home.html')
 
 def login_view(request):
-    print("loginView")
     return render(request, 'login.html')
+
+def dashboardView(request):
+    checkingAccounts = getTotalCheckingAccounts()
+    creditAccounts = getTotalCreditAccounts()
+
+    checkingTotal = getTotalCheckingMoney()
+    creditTotal = getTotalCreditMoney()
+    netBal = checkingTotal - creditTotal
+    return render(request, 'dashboard.html', 
+                  {'checkingAccounts': checkingAccounts, 
+                   'creditAccounts' : creditAccounts, 
+                   'totalSaved': checkingTotal, 
+                   'totalUsed': creditTotal, 
+                   'netBalance' : netBal})
 
 def loginCheck(request):
     username = request.POST.get('username')
@@ -78,7 +117,7 @@ def loginCheck(request):
         errorMessage = "Incorrect password. Please try again."
         return render(request, 'login.html', {'error_message': errorMessage})
     
-    # If login is successful
-    return render(request, 'chat.html')
+    #if login is successful go to dashboard
+    return redirect('dashboard')
 
 

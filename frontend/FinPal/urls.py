@@ -16,11 +16,12 @@ Including another URLconf
 """
 # from django.contrib import admin
 from django.urls import path
-from . import views  # Import your views file
+from . import views  
 
 urlpatterns = [
     path('', views.home_view, name='home'),
     path('chat', views.chat, name='chat'),
     path('login', views.login_view, name='login'),
-    path('loginCheck', views.loginCheck, name="loginCheck")
+    path('loginCheck', views.loginCheck, name="loginCheck"),
+    path('dashboard', views.dashboardView, name="dashboard")
 ]
